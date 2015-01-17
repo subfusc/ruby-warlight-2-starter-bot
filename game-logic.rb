@@ -1,48 +1,62 @@
 # -*- coding: utf-8 -*-
 require_relative 'world-map.rb'
-require_relative 'server-settings.rb'
 
 class GameLogic
 
-  def initialize(world_map, settings)
+  def initialize(world_map)
     @world_map = world_map
-    @settings = settings
   end
 
-  def server_says_go(next_line)
-    command = next_line.shift
-    time = next_line.shift
-
-    case command
-    when 'place_armies' then
-      name = @settings[:your_bot]
-      region = @world_map.my_regions.sample.id
-      armies = @settings[:starting_armies]
-      format('%s place_armies %i %i',
-             name,
-             region,
-             armies)
-    when 'attack/transfer' then
-      attack_from = @world_map.my_regions.select{|region| region.forces > 1}
-      attack_from.map do |region|
-        format('%s attack/transfer %i %i %i',
-               @settings[:your_bot],
-               region.id,
-               region.neighbours.sample.id,
-               region.forces - 1)
-      end.join(", ")
-    else
-      raise format('Unknown go command %s, please consult the manual', command)
-    end
+  ##
+  # Server askes for placements of armies with a time limit.
+  #
+  # Args:
+  # +time+ => number of milliseconds the bot has to decide
+  # +number_of_armies+ => The number of armies you can place this round.
+  #
+  # Output:
+  # A list of placements given as a region id and the number of armies to place
+  # in the current region.
+  #
+  # Example:
+  # [[1, 3], [2, 2]]
+  def place_armies(time, number_of_armies)
+    [[@world_map.my_regions.sample.id, number_of_armies]]
   end
 
+  ##
+  # Server asks the bot to make its moves, i.e attack or transfer
+  # between regions.
+  #
+  # Args:
+  # +time+ => number of milliseconds the bot has to decide
+  #
+  # Output:
+  # A list of attack or transfers to make represented with the country
+  # to attack/transfer from, the country to attack/transfer to and the
+  # number of forces.
+  #
+  # Example:
+  # [[1, 3, 3], [4, 12, 6], [2, 6, 7]]
+  def attack_or_transfer(time)
+    attack_from = @world_map.my_regions.select{|region| region.forces > 1}
+    attack_from.map {|region| [region.id, region.neighbours.sample.id, region.forces - 1]}
+  end
+
+  ##
   # Pick a starting region.
   #
-  # This is very important and should be expanded when
-  # time allows. For now, pick random. XD
-  def pick_starting_region(raw_line)
-    time = raw_line.shift
-    region_id = raw_line.sample.to_i
+  # Args:
+  # +time+ => milliseconds to decide
+  # +regions_ids+ => regions you can choose from. Array of ints
+  #
+  # Output:
+  # The region id that you selected.
+  #
+  # Example:
+  # 4
+  def pick_starting_region(time, region_ids)
+    region_id = region_ids.sample
     @world_map.claim_region(region_id)
     region_id
   end

@@ -11,7 +11,7 @@ if you want more information about the boring legal stuff.
 
 Clone the repo to get started using the bot:
 
-    $ git clone https://github.com/subfusc/ruby-warlight-2-starter-bot
+    $ git clone https://github.com/subfusc/ruby-warlight-2-starter-bot.git
 
 Running the bot is done by doing:
 
@@ -45,12 +45,12 @@ region and super-region inherits from (as they are both types of land...).
 bot.rb contains the I/O. The game uses Standard in/out to communicate with the bot,
 so its simple puts and $stdin that is used for communicating with the server.
 it is important to note that the I/O should be done synchronusly, so the option
-SYNC = true is imporant to have.
+STDOUT.sync = true is imporant to have.
 
 ### Upload to Warlight Server
 
-zip the necessesary ruby files and upload on your profile page. The
-starter files are: bot.rb, world-map.rb, game-logic.rb, land.rb, region.rb,
+zip the necessesary ruby files and upload the resulting file on your profile page.
+The starter files are: bot.rb, world-map.rb, game-logic.rb, land.rb, region.rb,
 server-settings.rb, super-region.rb
 
 #### Linux:
