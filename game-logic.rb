@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 require_relative 'world-map.rb'
+require_relative 'round.rb'
 
 class GameLogic
 
-  def initialize(world_map)
-    @world_map = world_map
+  def initialize(world_map, round)
+    @world_map = world_map # World Map
+    @round = round # Round object, contains information about the current round
   end
 
   ##
@@ -20,8 +22,8 @@ class GameLogic
   #
   # Example:
   # [[1, 3], [2, 2]]
-  def place_armies(time, number_of_armies)
-    [[@world_map.my_regions.sample.id, number_of_armies]]
+  def place_armies(time)
+    [[@world_map.my_regions.sample.id, @round.armies]]
   end
 
   ##

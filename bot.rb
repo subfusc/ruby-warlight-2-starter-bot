@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # -*- coding: utf-8 -*-
 require_relative 'world-map.rb'
+require_relative 'round.rb'
 require_relative 'server-settings.rb'
 require_relative 'game-logic.rb'
 
@@ -11,7 +12,8 @@ class Bot
   def initialize()
     @settings = ServerSettings.new()
     @world_map = WorldMap.new(@settings)
-    @game_master = GameLogic.new(@world_map)
+    @round = Round.new(@settings)
+    @game_master = GameLogic.new(@world_map, @round)
   end
 
   def server_says_go(raw_line)
@@ -20,7 +22,8 @@ class Bot
 
     case command
     when 'place_armies' then
-      response = @game_master.place_armies(time, @settings[:starting_armies])
+      @round.next_round()
+      response = @game_master.place_armies(time)
       if response.nil? || response.empty?
         'No moves'
       else
@@ -66,10 +69,10 @@ class Bot
         when 'setup_map'            then @world_map.setup_line(current_line)
         when 'settings'             then @settings.settings_line(current_line)
         when 'update_map'           then @world_map.update_map(current_line)
-        when 'opponent_moves'       then next # To be implemented
-        when 'Round', 'Output'      then next # This is only for test input
+        when 'opponent_moves'       then @round.opponent_moves = current_line
         when 'go'                   then puts(server_says_go(current_line))
         when 'pick_starting_region' then puts(pick_starting_region(current_line))
+        when 'Round', 'Output'      then next # This is only for test input
         else
           raise(format('Unknown top command %s, consult the manual on theaigames.com',
                        command))
