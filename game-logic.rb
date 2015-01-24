@@ -58,8 +58,6 @@ class GameLogic
   # Example:
   # 4
   def pick_starting_region(time, region_ids)
-    region_id = region_ids.sample
-    @world_map.claim_region(region_id)
-    region_id
+    region_ids.sample
   end
 end

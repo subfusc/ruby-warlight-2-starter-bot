@@ -11,8 +11,8 @@ class Bot
 
   def initialize()
     @settings = ServerSettings.new()
-    @world_map = WorldMap.new(@settings)
     @round = Round.new(@settings)
+    @world_map = WorldMap.new(@round, @settings)
     @game_master = GameLogic.new(@world_map, @round)
   end
 
