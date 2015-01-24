@@ -3,17 +3,22 @@ require_relative 'server-settings.rb'
 
 class Round
   attr_reader :round, :opponent_moves
+  attr_accessor :super_region_changes
 
   def initialize(settings)
     @round = 0
     @settings = settings
     @opponent_moves = []
+    @super_region_changes = {:lost => [], :gained => []}
   end
 
   def next_round()
-    puts(format("Round: %i\nMoves: %s", @round, @opponent_moves))
     @round += 1
     @opponent_moves = []
+  end
+
+  def update_map()
+    @super_region_changes = {:lost => [], :gained => []}
   end
 
   ##
