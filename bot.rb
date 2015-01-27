@@ -66,13 +66,14 @@ class Bot
 
         command = current_line.shift
         case command
-        when 'setup_map'            then @world_map.setup_line(current_line)
-        when 'settings'             then @settings.settings_line(current_line)
-        when 'update_map'           then @world_map.update_map(current_line)
-        when 'opponent_moves'       then @round.opponent_moves = current_line
-        when 'go'                   then puts(server_says_go(current_line))
-        when 'pick_starting_region' then puts(pick_starting_region(current_line))
-        when 'Round', 'Output'      then next # This is only for test input
+        when 'setup_map'                  then @world_map.setup_line(current_line)
+        when 'settings'                   then @settings.settings_line(current_line)
+        when 'update_map'                 then @world_map.update_map(current_line)
+        when 'opponent_moves'             then @round.opponent_moves = current_line
+        when 'go'                         then puts(server_says_go(current_line))
+        when 'pick_starting_region'       then puts(pick_starting_region(current_line))
+        when 'Round', 'Output'            then next
+        when 'Maximum', 'Response'        then next # This is only for test input
         else
           raise(format('Unknown top command %s, consult the manual on theaigames.com',
                        command))
