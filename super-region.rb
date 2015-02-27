@@ -14,4 +14,14 @@ class SuperRegion < Land
   def push_region(region)
     @regions << region
   end
+
+  def calculate_neighbour_regions()
+    @neighbours = @regions.map do |region|
+      region.neighbours.select do |neighbour|
+        neighbour.super_region != self
+      end.map do |neighbour|
+        neighbour.super_region
+      end
+    end.flatten.uniq
+  end
 end
