@@ -10,13 +10,14 @@ class ServerSettings
 
     option = raw_line.shift
     case option
-    when 'timebank'         then @settings[option.to_sym] = raw_line[0].to_i
-    when 'time_per_move'    then @settings[option.to_sym] = raw_line[0].to_i
-    when 'max_rounds'       then @settings[option.to_sym] = raw_line[0].to_i
-    when 'your_bot'         then @settings[option.to_sym] = raw_line[0]
-    when 'opponent_bot'     then @settings[option.to_sym] << raw_line[0]
-    when 'starting_armies'  then @settings[option.to_sym] = raw_line[0].to_i
-    when 'starting_regions' then
+    when 'timebank'             then @settings[option.to_sym] =  raw_line[0].to_i
+    when 'time_per_move'        then @settings[option.to_sym] =  raw_line[0].to_i
+    when 'max_rounds'           then @settings[option.to_sym] =  raw_line[0].to_i
+    when 'your_bot'             then @settings[option.to_sym] =  raw_line[0]
+    when 'opponent_bot'         then @settings[option.to_sym] << raw_line[0]
+    when 'starting_armies'      then @settings[option.to_sym] =  raw_line[0].to_i
+    when 'starting_pick_amount' then @settings[option.to_sym] =  raw_line[0].to_i
+    when 'starting_regions'     then
       @settings[option.to_sym] = raw_line.map{|value| value.to_i}
     else raise format('Unknown setting %s. Reffer to manual on theaigames.com.', option)
     end
